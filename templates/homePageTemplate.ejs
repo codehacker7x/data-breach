@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recent Data Breaches</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .severity {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .high {
+            background-color: #ff4d4d;
+        }
+
+        .medium {
+            background-color: #ffa64d;
+        }
+
+        .low {
+            background-color: #66cc66;
+        }
+
+        .pagination {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .pagination a {
+            color: black;
+            padding: 8px 16px;
+            text-decoration: none;
+            transition: background-color .3s;
+            border: 1px solid #ddd;
+            margin: 0 4px;
+        }
+
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+            border: 1px solid #4CAF50;
+        }
+
+        #searchBox {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+    </style>
+        <%- include('/head.ejs') %>
+
+</head>
+
+<body>
+    <%- include("/header.ejs") %>
+
+    <div class="container">
+        <h1>Recent Data Breaches</h1>
+        <p>Here are the most recent breaches that have been reported. You can subscribe to receive weekly updates on new and existing breaches.</p>
+
+        <input type="text" id="searchBox" placeholder="Search by Organization, Threat Actor, or Industry...">
+
+        <table id="breachesTable">
+            <thead>
+                <tr>
+                    <th>Severity</th>
+                    <th>Organization</th>
+                    <th>Threat Actor</th>
+                    <th>Date Reported</th>
+                    <th>Industry</th>
+                    <th>Country</th>
+                </tr>
+            </thead>
+            <tbody id="tableBody">
+                <% data.forEach(function(category) { %>
+                    <% category.pages.forEach(function(breach) { %>
+                        <tr onclick="window.location.href='<%= breach.slug %>'" style="cursor: pointer;">
+                            <td>
+                                <% 
+                                let severityClass = '';
+                                let severityNum = 0;
+                                try {
+                                    severityNum = parseInt(breach.Severity.split('/')[0]);
+                                } catch (error) {
+                                    console.log(breach.Organization, error);
+                                }
+                                if (severityNum >= 7) {
+                                    severityClass = 'high';
+                                } else if (severityNum >= 4) {
+                                    severityClass = 'medium';
+                                } else {
+                                    severityClass = 'low';
+                                }
+                                %>
+                                <span class="severity <%= severityClass %>"><%= breach.Severity %></span>
+                            </td>
+                            <td><%= breach.Organization %></td>
+                            <td><%= breach.ThreatActor %></td>
+                            <td><%= breach.DateReported %></td>
+                            <td><%= breach.Industry %></td>
+                            <td><%= breach.Country %></td>
+                        </tr>
+                    <% }); %>
+                <% }); %>
+            </tbody>
+        </table>        
+
+        <div class="pagination">
+            <a href="#" id="firstPage">&laquo;</a>
+            <a href="#" id="prevPage">&lsaquo;</a>
+            <span id="paginationNumbers"></span>
+            <a href="#" id="nextPage">&rsaquo;</a>
+            <a href="#" id="lastPage">&raquo;</a>
+        </div>
+    </div>
+    <%- include("/footer.ejs") %>
+
+    <script>
+        // Pagination configuration
+        const rowsPerPage = 15;
+        let currentPage = 1;
+        let totalRows = 0;
+
+        // Add pagination functionality
+        function paginateTable() {
+            const table = document.getElementById("breachesTable");
+            const rows = table.getElementsByTagName("tr");
+            totalRows = rows.length - 1; // Exclude the header
+
+            const start = (currentPage - 1) * rowsPerPage + 1; // 1 for header row
+            const end = start + rowsPerPage;
+
+            for (let i = 1; i < rows.length; i++) { // Skip header row
+                if (i >= start && i < end) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+
+            updatePaginationNumbers();
+        }
+
+        // Update pagination buttons based on total rows and current page
+        function updatePaginationNumbers() {
+            const paginationNumbers = document.getElementById("paginationNumbers");
+            paginationNumbers.innerHTML = ""; // Clear current numbers
+
+            const totalPages = Math.ceil(totalRows / rowsPerPage);
+            const nearbyPages = 2; // Number of pages to show before and after the current page
+
+            // Show the first page button
+            document.getElementById("firstPage").style.display = currentPage > 1 ? "inline" : "none";
+            
+            // Show the last page button
+            document.getElementById("lastPage").style.display = currentPage < totalPages ? "inline" : "none";
+
+            // Add previous page link
+            document.getElementById("prevPage").style.display = currentPage > 1 ? "inline" : "none";
+
+            // Add next page link
+            document.getElementById("nextPage").style.display = currentPage < totalPages ? "inline" : "none";
+
+            // Show nearby pages (currentPage and surrounding pages)
+            for (let i = Math.max(1, currentPage - nearbyPages); i <= Math.min(totalPages, currentPage + nearbyPages); i++) {
+                const pageLink = document.createElement("a");
+                pageLink.href = "#";
+                pageLink.innerText = i;
+                pageLink.classList.add("pageNumber");
+                if (i === currentPage) {
+                    pageLink.classList.add("active");
+                }
+                pageLink.addEventListener("click", function () {
+                    currentPage = i;
+                    paginateTable();
+                });
+                paginationNumbers.appendChild(pageLink);
+            }
+        }
+
+        // Event listeners for First, Previous, Next, and Last buttons
+        document.getElementById("firstPage").addEventListener("click", function () {
+            currentPage = 1;
+            paginateTable();
+        });
+
+        document.getElementById("prevPage").addEventListener("click", function () {
+            if (currentPage > 1) {
+                currentPage--;
+                paginateTable();
+            }
+        });
+
+        document.getElementById("nextPage").addEventListener("click", function () {
+            const totalPages = Math.ceil(totalRows / rowsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                paginateTable();
+            }
+        });
+
+        document.getElementById("lastPage").addEventListener("click", function () {
+            currentPage = Math.ceil(totalRows / rowsPerPage);
+            paginateTable();
+        });
+
+        // Initial pagination setup
+        window.onload = function () {
+            paginateTable();
+        };
+
+        // Search box functionality
+        document.getElementById('searchBox').addEventListener('keyup', function () {
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("searchBox");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("breachesTable");
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 1; i < tr.length; i++) { // Start at 1 to skip the header
+                tdOrganization = tr[i].getElementsByTagName("td")[1];
+                tdThreatActor = tr[i].getElementsByTagName("td")[2];
+                tdIndustry = tr[i].getElementsByTagName("td")[4];
+                if (tdOrganization || tdThreatActor || tdIndustry) {
+                    txtValueOrg = tdOrganization.textContent || tdOrganization.innerText;
+                    txtValueThreat = tdThreatActor.textContent || tdThreatActor.innerText;
+                    txtValueIndustry = tdIndustry.textContent || tdIndustry.innerText;
+                    if (txtValueOrg.toUpperCase().indexOf(filter) > -1 ||
+                        txtValueThreat.toUpperCase().indexOf(filter) > -1 ||
+                        txtValueIndustry.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+
+
+</html>

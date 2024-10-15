@@ -1,0 +1,20 @@
+header {
+  min-height: 85px;
+  background-color: $white;
+  border-bottom: 1px solid $gray-lightest;
+  box-shadow: 0 0px 4px 1px rgba(0, 0, 0, 0.06);
+  position: sticky;
+  width: 100%;
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  .container {
+    max-width: 1248px;
+    margin: 0 auto;
+  }
+
+}

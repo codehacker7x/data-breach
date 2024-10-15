@@ -1,0 +1,46 @@
+.search {
+    max-width: 768px;
+    margin-inline: auto;
+    width: 100%;
+    position: -webkit-sticky;
+    /* For Safari */
+    position: sticky;
+    top: 0;
+    /* Adjust the top value to control how far from the top the element sticks */
+    z-index: 10;
+
+    /* Ensure it stays on top of other content */
+    input {
+        background-color: $white;
+        color: $coolGray-70;
+        border-radius: 8px;
+        padding-inline: 48px 16px;
+        width: 100%;
+        min-height: 64px;
+        border: none;
+        background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='20' height='20' fill=''/%3E%3Cpath d='M9.16667 15.8333C12.8486 15.8333 15.8333 12.8486 15.8333 9.16667C15.8333 5.48477 12.8486 2.5 9.16667 2.5C5.48477 2.5 2.5 5.48477 2.5 9.16667C2.5 12.8486 5.48477 15.8333 9.16667 15.8333Z' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M17.5 17.5L13.875 13.875' stroke='%23475569' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+        background-position: center left 16px;
+        background-repeat: no-repeat;
+        font-weight: 500;
+        border: 1px solid $coolGray-30;
+        transition: all 0.2s ease-in-out;
+        font-size: 16px;
+
+        &::-webkit-search-decoration:hover,
+        &::-webkit-search-cancel-button:hover {
+            cursor: pointer;
+        }
+
+        &::placeholder {
+            color: $coolGray-50;
+        }
+
+        @media (max-width: 1023px) {
+            max-width: 100%;
+        }
+
+        &:hover {
+            border: 1px solid $purple-70;
+        }
+    }
+}

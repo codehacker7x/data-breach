@@ -1,0 +1,56 @@
+projectName: "Data Breach"
+jsonFilePath: "./result.json"
+baseUrl: "https://mojoauth.com"
+portalHeading: ""
+portalTitle: "Data Breaches - MojoAuth"
+portalDescription: "Lates Data Breaches "
+portalMetaDescription: "Data Breaches"
+portalType : website 
+siteName : MojoAuth
+searchPlaceholder: "Search"
+useAlphabetsCategory: true
+homeLink: "https://mojoauth.com/"
+logoLink: "/"
+logoImgUrl: "https://mojoauth.com/assets/images/logo.png"
+metaImgUrl: https://mojoauth.com/assets/images/mojoauth.png
+ctaLink: "https://auth.mojoauth.com"
+copyrightText: "Copyright 2024, MojoAuth"
+faviconUrl: "https://mojoauth.com/favicon.ico"
+googleTagManagerId: "GTM-59TNN3K"
+pagesTitle:
+  prefix: "A Detailed Overview of "
+  suffix: ""
+categoryPagesTitle:
+  prefix: ""
+  suffix: ""
+templateRoot:
+  - "./templates"
+  - "./templates"
+homeTemplatePath: "./templates/homePageTemplate.ejs"
+categoryTemplatePath: "./templates/categoryTemplate.ejs"
+pageTemplatePath: "./templates/pagesTemplate.ejs"
+outputDir: "./public"
+socialLinks:
+  - platform: "Twitter"
+    url: "https://twitter.com/mojoauth"
+  - platform: "LinkedIn"
+    url: "https://www.linkedin.com/company/mojoauth"
+theme:
+  primaryColor: "#6a4dff"
+  secondaryColor: "#f3f4f6"
+  backgroundColor: "#ffffff"
+  textColor: "#111827"
+  accentColor: "#fbbf24"
+fonts:
+  - family: "Inter"
+    weights:
+      - 400
+      - 500
+      - 600
+  - family: "Poppins"
+    weights:
+      - 500
+      - 600
+      - 700
+footer: "/footer.ejs"
+header: "/header.ejs"

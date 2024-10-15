@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= pageTitle %> Data Breach</title>
+    <meta name="description" content="<%= metaDescription %>">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        .severity {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 10px;
+        }
+        .high {
+            background-color: #ff4d4d;
+        }
+        .medium {
+            background-color: #ffa64d;
+        }
+        .low {
+            background-color: #66cc66;
+        }
+        .details {
+            margin-top: 20px;
+        }
+        .details p {
+            margin-bottom: 10px;
+        }
+        .details strong {
+            font-weight: bold;
+            color: #444;
+        }
+        .content-blocks {
+            margin-top: 30px;
+        }
+    </style>
+        <%- include('/head.ejs') %>
+
+</head>
+<body>
+    <%- include("/header.ejs") %>
+
+    <div class="container">
+        <h1><%= pageHeading %> Data Breach</h1>
+        
+        <% 
+        let severityClass = '';
+        let severityNum = parseInt(Severity.split('/')[0]);
+        if (severityNum >= 7) {
+            severityClass = 'high';
+        } else if (severityNum >= 4) {
+            severityClass = 'medium';
+        } else {
+            severityClass = 'low';
+        }
+        %>
+        <span class="severity <%= severityClass %>">Severity: <%= Severity %></span>
+        
+        <div class="details">
+            <p><strong>Organization:</strong> <%= Organization || 'N/A' %></p>
+            <p><strong>Threat Actor:</strong> <%= ThreatActor || 'N/A' %></p>
+            <p><strong>Date Reported:</strong> <%= DateReported || 'N/A' %></p>
+            <p><strong>Industry:</strong> <%= Industry || 'N/A' %></p>
+            <p><strong>Country:</strong> <%= Country || 'N/A' %></p>
+        </div>
+        
+        <div class="content-blocks">
+            <% pageContentBlocks.forEach(function(block) { %>
+                <div class="content-block">
+                    <%- block %>
+                </div>
+            <% }); %>
+        </div>
+
+        <p><a href="/">Back to Home</a></p>
+    </div>
+    <%- include("/footer.ejs") %>
+</body>
+</html>
