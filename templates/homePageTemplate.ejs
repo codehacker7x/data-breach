@@ -29,57 +29,59 @@
             </section>
             <section class="page-content" id="content">
                 <div class="page-content-inner">
-                    <table id="breachesTable">
-                        <thead>
-                            <tr>
-                                <th>Severity</th>
-                                <th>Organization</th>
-                                <th>Threat Actor</th>
-                                <th>Date Reported</th>
-                                <th>Industry</th>
-                                <th>Country</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody">
-                            <% data.forEach(function(category) { %>
-                                <% category.pages.forEach(function(breach) { %>
-                                    <tr onclick="window.location.href='<%= breach.slug %>'" style="cursor: pointer;">
-                                        <td>
-                                            <% let severityClass='' ; let severityNum=0; try {
-                                                severityNum=parseInt(breach.Severity.split('/')[0]); } catch (error) {
-                                                console.log(breach.Organization, error); } if (severityNum>= 7) {
-                                                severityClass = 'high';
-                                                } else if (severityNum >= 4) {
-                                                severityClass = 'medium';
-                                                } else {
-                                                severityClass = 'low';
-                                                }
-                                                %>
-                                                <span class="severity <%= severityClass %>">
-                                                    <%= breach.Severity %>
-                                                </span>
-                                        </td>
-                                        <td>
-                                            <%= breach.Organization %>
-                                        </td>
-                                        <td>
-                                            <%= breach.ThreatActor %>
-                                        </td>
-                                        <td>
-                                            <%= breach.DateReported %>
-                                        </td>
-                                        <td>
-                                            <%= breach.Industry %>
-                                        </td>
-                                        <td>
-                                            <%= breach.Country %>
-                                        </td>
-                                    </tr>
-                                    <% }); %>
+                    <div class="table-wrap">
+                        <table id="breachesTable">
+                            <thead>
+                                <tr>
+                                    <th>Severity</th>
+                                    <th>Organization</th>
+                                    <th>Threat Actor</th>
+                                    <th>Date Reported</th>
+                                    <th>Industry</th>
+                                    <th>Country</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                                <% data.forEach(function(category) { %>
+                                    <% category.pages.forEach(function(breach) { %>
+                                        <tr onclick="window.location.href='<%= breach.slug %>'"
+                                            style="cursor: pointer;">
+                                            <td>
+                                                <% let severityClass='' ; let severityNum=0; try {
+                                                    severityNum=parseInt(breach.Severity.split('/')[0]); } catch (error)
+                                                    { console.log(breach.Organization, error); } if (severityNum>= 7) {
+                                                    severityClass = 'high';
+                                                    } else if (severityNum >= 4) {
+                                                    severityClass = 'medium';
+                                                    } else {
+                                                    severityClass = 'low';
+                                                    }
+                                                    %>
+                                                    <span class="severity <%= severityClass %>">
+                                                        <%= breach.Severity %>
+                                                    </span>
+                                            </td>
+                                            <td>
+                                                <%= breach.Organization %>
+                                            </td>
+                                            <td>
+                                                <%= breach.ThreatActor %>
+                                            </td>
+                                            <td>
+                                                <%= breach.DateReported %>
+                                            </td>
+                                            <td>
+                                                <%= breach.Industry %>
+                                            </td>
+                                            <td>
+                                                <%= breach.Country %>
+                                            </td>
+                                        </tr>
                                         <% }); %>
-                        </tbody>
-                    </table>
-
+                                            <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
                     <ul class="pagination">
                         <li>
                             <a href="#" id="firstPage">&laquo;</a>
@@ -103,7 +105,7 @@
 
             <script>
                 // Pagination configuration
-                const rowsPerPage = 15;
+                const rowsPerPage = 10;
                 let currentPage = 1;
                 let totalRows = 0;
 
